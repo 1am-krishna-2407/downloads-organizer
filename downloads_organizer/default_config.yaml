@@ -1,0 +1,78 @@
+# Downloads Organizer: default settings.
+#
+# Don't edit this file. Run `downloads-organizer init` to create your own config
+# (it only needs the settings you want to change), or see `downloads-organizer doctor`
+# for where it lives. Relative paths in your config are resolved against its folder.
+
+# null = your system's Downloads folder (follows Windows' "Location" setting / XDG on Linux).
+downloads_dir: null
+# Where approved moves go. null = <downloads_dir>/Organized. Never scanned.
+organized_dir: null
+# Database, reports and logs. null = your per-user app data folder.
+data_dir: null
+reports_dir: null
+logs_dir: null
+
+recursive: true
+# Folders never scanned (absolute, or relative to downloads_dir).
+exclude_dirs: []
+# Don't look inside software (unzipped apps/installers) or code project folders:
+# their files belong together, aren't documents, and must never be moved one by one.
+skip_software_folders: true
+skip_project_folders: true
+
+# Documents the organizer reads. Other files are listed but left alone.
+supported_extensions: [.pdf, .docx, .doc, .txt, .md, .rtf, .csv, .xlsx, .xls, .pptx, .png, .jpg, .jpeg]
+# Incomplete or temporary downloads, skipped entirely.
+skip_extensions: [.crdownload, .part, .partial, .download, .opdownload, .tmp, .temp]
+skip_names: [desktop.ini, thumbs.db, .ds_store]
+skip_name_prefixes: ["~$", ".~lock"]   # Office lock files
+
+extraction:
+  max_file_mb: 100          # larger documents go to manual review
+  max_pages: 50             # PDF pages read per document
+  max_chars: 100000         # text kept per document
+  min_chars_per_page: 25    # below this a PDF is treated as scanned
+  ocr_enabled: true         # used when Tesseract is installed
+  ocr_language: eng         # e.g. "eng+hin" if the language packs are installed
+  ocr_max_pages: 10
+  min_ocr_words: 8          # an image with fewer real words is a photo, not a document
+  tessdata_dir: null        # null = auto-detect
+  workers: 0                # parallel reading/OCR processes; 0 = automatic
+
+classification:
+  # nvidia (build.nvidia.com), openrouter, ollama (fully local, no key), or custom.
+  # A provider fills in base_url, model, escalation_model, api_key_env and rate limits;
+  # any of those set here override it.
+  provider: nvidia
+  escalate_below_confidence: 0.6
+  head_chars: 4000              # characters sent from the start of each document
+  tail_chars: 1500              # ...and from the end of longer ones
+  redact_personal_data: true    # mask emails, phones, card/account and ID numbers before sending
+  temperature: 0.1
+  max_output_tokens: 1024
+  disable_thinking: true
+  structured_output: response_format   # response_format | nvext | none (falls back automatically)
+  timeout_seconds: 60
+  max_retries: 4
+  concurrency: 4                # parallel requests (still within requests_per_minute)
+
+decisions:
+  review_below_confidence: 0.6   # lower AI confidence -> manual review
+  cleanup_min_confidence: 0.8    # cleanup suggestions below this -> manual review
+  protected_types:               # always KEEP, whatever the AI says
+    - Resume or CV
+    - Certificate
+    - Offer letter or employment document
+    - Financial document
+    - Government or legal document
+  protected_sensitivity: [financial, identity, legal, medical]  # never cleanup candidates
+  project_markers: [.git, package.json, pyproject.toml, setup.py, requirements.txt, CMakeLists.txt,
+                    Makefile, pom.xml, build.gradle, Cargo.toml, go.mod, .sln, .csproj,
+                    manifest.json]   # manifest.json = browser extension
+  project_name_patterns: ["-(master|main)$"]
+  similar_threshold: 0.8         # text similarity for "possible other version" (0-1)
+
+automation:
+  min_file_age_seconds: 120      # newer files may still be downloading; they wait for the next run
+  watch_interval_minutes: 30

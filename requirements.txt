@@ -1,0 +1,2 @@
+# Development install (editable, with dashboard and test tools):
+-e .[dev]

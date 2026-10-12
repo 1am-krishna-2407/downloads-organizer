@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "downloads-organizer"
+dynamic = ["version"]
+description = "Organize your Downloads folder with AI, safely: nothing moves without your approval and nothing is ever deleted."
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["downloads", "organizer", "documents", "ocr", "llm", "nemotron", "file-management"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: Desktop Environment :: File Managers",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "PyYAML>=6.0",
+    "openpyxl>=3.1",
+    "PyMuPDF>=1.24",
+    "python-docx>=1.1",
+    "python-pptx>=1.0",
+    "python-calamine>=0.3",
+    "striprtf>=0.0.26",
+    "httpx>=0.27",
+    "pydantic>=2.6",
+    "python-dotenv>=1.0",
+    "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+dashboard = ["streamlit>=1.40", "pandas>=2.0"]
+dev = ["pytest>=8.0", "streamlit>=1.40", "pandas>=2.0"]
+
+[project.scripts]
+downloads-organizer = "downloads_organizer.cli:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "downloads_organizer.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["downloads_organizer*"]
+
+[tool.setuptools.package-data]
+downloads_organizer = ["default_config.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

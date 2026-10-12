@@ -1,0 +1,15 @@
+# Secrets and personal data never belong in the repository.
+.env
+secrets.env
+*.db
+*.db-wal
+*.db-shm
+
+# Python / tooling
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+build/
+dist/
+*.egg-info/
