@@ -23,7 +23,7 @@ Downloads ─► list files ─► read text (+OCR) ─► spot duplicates & ver
 Requires Python 3.10+.
 
 ```bash
-pip install "downloads-organizer[dashboard] @ git+https://github.com/<you>/downloads-organizer"
+pip install "downloads-organizer[dashboard] @ git+https://github.com/1am-krishna-2407/downloads-organizer"
 # or, from a checkout of this repository:
 pip install -e ".[dashboard]"
 ```
